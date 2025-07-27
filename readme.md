@@ -53,6 +53,8 @@ A **scalable URL shortener backend** built with **Express 5 (TypeScript)**, foll
 - MongoDB (local or cloud, e.g., Atlas)
 - Redis (local or Docker)
 ### .env
+```html
+<pre>
 PORT=
 MONGO_URI=
 ACCESS_TOKEN_SECRET=
@@ -64,6 +66,7 @@ PHONE_REGEX=
 MAX_URLS_PER_DAY=
 BASE_URL=
 CRON_JOB_INTERVEL=
+</pre>
 
 ### Installation
 ```bash
