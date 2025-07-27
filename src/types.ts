@@ -29,3 +29,14 @@ export interface MongoDuplicateKeyError extends Error {
 export type LoginValidationResult<T> =
   | { success: true; data: T }
   | { success: false; errors: Record<string, string>[] };
+
+  
+export interface IUrl extends Document {
+  userId: string;
+  originalUrl: string;
+  shortCode: string;
+  shortUrl: string;
+  clicks: number;
+  expiresAt: Date;
+  createdAt:Date
+}

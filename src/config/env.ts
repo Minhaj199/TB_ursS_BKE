@@ -21,4 +21,6 @@ export const env = {
   REFRESH_EXPIRES_IN: parsedEnv.data.REFRESH_EXPIRES_IN,
   EMAIL_REGEX: new RegExp(parsedEnv.data.EMAIL_REGEX),
   PHONE_REGEX: new RegExp(parsedEnv.data.PHONE_REGEX),
+  MAX_URLS_PER_DAY:parseInt(parsedEnv.data.MAX_URLS_PER_DAY),
+  BASE_URL:parsedEnv.data.BASE_URL
 };

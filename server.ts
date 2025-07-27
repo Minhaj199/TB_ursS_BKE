@@ -16,8 +16,6 @@ const corsOpetion = {
   exposedHeaders: ["authorizationforuser"],
 };
 
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors(corsOpetion));

@@ -50,20 +50,31 @@ export const authController = {
           throw new AppError(
             "userAuthentication faild",
             HttpStatus.NOT_FOUND,
-            ErrorType.GeneralError,
-            [{ general: "user not found" }]
+            ErrorType.FieldError,
+            [{ email: "user not found" }]
           );
         }
       } else {
         ////////////zode validation failed////////////
+       console.log(validate.errors)
+       if('GereralError' in validate.errors[0]){
         throw new AppError(
-          "zod Error",
-          HttpStatus.BAD_REQUEST,
-          ErrorType.FieldError,
-          validate.errors
-        );
+           "zod Error",
+           HttpStatus.BAD_REQUEST,
+           ErrorType.GeneralError,
+           validate.errors
+         );
+       }else{
+         throw new AppError(
+           "zod Error",
+           HttpStatus.BAD_REQUEST,
+           ErrorType.FieldError,
+           validate.errors
+         );
+       }
       }
     } catch (error) {
+      console.log(error)
       next(error);
     }
   },

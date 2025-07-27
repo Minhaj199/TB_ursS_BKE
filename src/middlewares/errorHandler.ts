@@ -21,10 +21,11 @@ export const erroHandler: ErrorRequestHandler = (
     const field = err.keyValue ? Object.keys(err.keyValue)[0] : "unknown";
     return res.status(HttpStatus.BAD_REQUEST).json({
       sucess: false,
-      errors: [{ [field]: `${field} already exists` }],
+      result: [{ [field]: `${field} already exists`}],
       errorType: ErrorType.FieldError,
     });
   } else if (error instanceof AppError) {
+    console.log(error)
     res.status(error.statusCode).json(error.toJSON());
   } else if (error instanceof Error) {
     logError(req, error);
