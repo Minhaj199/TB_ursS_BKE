@@ -7,7 +7,6 @@ import {
 } from "../schemas/userSchema";
 import { LoginValidationResult, SignupValidationResult } from "../types";
 import { ErrorType } from "../constrains/ErrorTypes";
-import { ZodErrorMap } from "zod";
 import { UrlSchema } from "../schemas/urlSchema";
 
 ////////////formating error///

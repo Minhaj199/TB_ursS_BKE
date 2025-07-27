@@ -1,8 +1,9 @@
-// backend/src/middleware/dailyLimit.js
 import { NextFunction, Request, Response } from "express";
 import redis from "../config/radis";
 import { env } from "../config/env";
 import { HttpStatus } from "../constrains/statusCodeContrain";
+import { AppError } from "../errors/customError";
+import { ErrorType } from "../constrains/ErrorTypes";
 
 const MAX_URLS_PER_DAY = env.MAX_URLS_PER_DAY;
 
@@ -27,14 +28,16 @@ export async function checkDailyLimit(
     }
 
     if (count > MAX_URLS_PER_DAY) {
-      return res.status(HttpStatus.TOO_MANY_REQUESTS).json({
-        success: false,
-        message: "Daily limit of 100 URLs reached",
-      });
+      throw new AppError(
+        "url validation error",
+        HttpStatus.BAD_REQUEST,
+        ErrorType.FieldError,
+        [{ url: `maximum limit is ${env.MAX_URLS_PER_DAY}/day` }]
+      );
     }
 
     next();
   } catch (err) {
-    res.status(500).json({ success: false, message: "Internal server error" });
+    next(err);
   }
 }

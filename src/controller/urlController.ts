@@ -45,14 +45,20 @@ export const urlContrller = {
   },
   fetchUrls: async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const { page = 1, limit = 3 } = req.query;
       const userId = req.userID;
       const urls = await urlModel
         .find({ userId: userId }, { userId: 0 })
-        .sort({ _id: -1 });
+        .sort({ _id: -1 })
+        .skip((Number(page) - 1) * Number(limit))
+        .limit(Number(limit));
+      const count: number = await urlModel
+        .find({ userId: userId })
+        .countDocuments();
       const today = new Date().toISOString().split("T")[0];
       const key = `user:${userId}:date:${today}`;
       const dialyLimit = (await redis.get(key)) || "0";
-      res.json({ urls, dialyLimit: parseInt(dialyLimit) });
+      res.json({ urls, dialyLimit: parseInt(dialyLimit), totalUrl: count });
     } catch (error) {
       next(error);
     }
@@ -88,8 +94,11 @@ export const urlContrller = {
             await redis.set(shortCode, fetchLongUrl.originalUrl, "EX", 3600);
             res.redirect(fetchLongUrl.originalUrl);
           } else {
+            throw new Error("invalid link");
           }
         }
+      } else {
+        throw new Error("invalid link");
       }
     } catch (error) {
       next(error);

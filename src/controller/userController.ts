@@ -87,13 +87,12 @@ export const authController = {
         }
       }
     } catch (error) {
-      console.log(error);
       next(error);
     }
   },
   signup: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      ////////// validating userdata with zode//////
+      ////////// validating userdata with zod//////
       const vaidatedData = validateSignup(req.body);
       //////////////////
       if (vaidatedData.success) {
@@ -130,11 +129,11 @@ export const authController = {
       const verifyToken: any = verifyRefreshToken(validateToken);
       if (typeof verifyToken === "object" && "userId" in verifyToken) {
         const inRedis = await redis.get(verifyToken.userId + "acs_redic");
-
         if (inRedis) {
           const token = generateAccessToken(verifyToken.userId);
           return res.json({ token: token });
         } else {
+          throw new Error("in valid token");
         }
       }
     } catch (error) {
@@ -143,6 +142,7 @@ export const authController = {
         if (!isNaN(isStutusCode)) {
           res.status(HttpStatus.UNAUTHORIZED).json({ jwtValidation: false });
         } else {
+          throw new Error("server error");
         }
       }
     }

@@ -8,20 +8,42 @@ const ACCESS_EXPIRES_IN = env.ACCESS_EXPIRES_IN as SignOptions["expiresIn"];
 const REFRESH_EXPIRES_IN = env.REFRESH_EXPIRES_IN as SignOptions["expiresIn"];
 
 export const generateAccessToken = (userId: string) => {
-  return jwt.sign({ userId }, ACCESS_TOKEN_SECRET, {
-    expiresIn: ACCESS_EXPIRES_IN,
-  });
+  try {
+    return jwt.sign({ userId }, ACCESS_TOKEN_SECRET, {
+      expiresIn: ACCESS_EXPIRES_IN,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("internal server error");
+    }
+  }
 };
 
 export const generateRefreshToken = (userId: string) => {
-  return jwt.sign({ userId }, REFRESH_TOKEN_SECRET, {
-    expiresIn: REFRESH_EXPIRES_IN,
-  });
+  try {
+    return jwt.sign({ userId }, REFRESH_TOKEN_SECRET, {
+      expiresIn: REFRESH_EXPIRES_IN,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("internal server error");
+    }
+  }
 };
 export const verifyAccessToken = (token: string) => {
   try {
     return jwt.verify(token, ACCESS_TOKEN_SECRET);
-  } catch (error) {}
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("internal server error");
+    }
+  }
 };
 export const verifyRefreshToken = (token: string) => {
   try {

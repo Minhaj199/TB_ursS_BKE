@@ -1,9 +1,7 @@
-
 /* eslint-disable @typescript-eslint/no-namespace */
 import { Request, Response, NextFunction } from "express";
-;
 import { JwtPayload } from "jsonwebtoken";
-import { HttpStatus } from "../constrains/statusCodeContrain"; 
+import { HttpStatus } from "../constrains/statusCodeContrain";
 import { verifyAccessToken } from "../utils/jwt";
 
 declare global {
@@ -13,7 +11,6 @@ declare global {
     }
   }
 }
-
 
 export const userJwtAuthenticator = async (
   req: Request,
@@ -25,7 +22,7 @@ export const userJwtAuthenticator = async (
   if (token && typeof token === "string") {
     try {
       const decode = verifyAccessToken(token);
-      
+
       if (typeof decode === "string") {
         res.status(HttpStatus.FORBIDDEN).json({
           message: "token is not valid,please log out",
@@ -33,11 +30,11 @@ export const userJwtAuthenticator = async (
         });
       }
       const isValid = decode as JwtPayload;
-      
+
       const currentTime = Math.floor(Date.now() / 1000);
       if (isValid) {
         if (isValid.exp && isValid.exp > currentTime) {
-          req.userID = isValid.userId
+          req.userID = isValid.userId;
           next();
         } else {
           res
@@ -45,14 +42,13 @@ export const userJwtAuthenticator = async (
             .json({ message: "Token expired", status: HttpStatus.BAD_REQUEST });
         }
       } else {
-       res.status(HttpStatus.FORBIDDEN).json({
+        res.status(HttpStatus.FORBIDDEN).json({
           message: "validation Faild,please log out",
           status: HttpStatus.FORBIDDEN,
         });
-        return
+        return;
       }
     } catch (error) {
-      console.log(error)
       if (
         error instanceof Error &&
         refresh &&

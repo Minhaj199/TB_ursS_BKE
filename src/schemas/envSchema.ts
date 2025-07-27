@@ -21,6 +21,7 @@ export const envSchema = z.object({
   REFRESH_EXPIRES_IN: z.string().default("7d"),
   MAX_URLS_PER_DAY: z.string().default("100"),
   BASE_URL: z.string("base url not found").min(1, "base url not found"),
+  CRON_JOB_INTERVEL:z.string(),
   EMAIL_REGEX: z
     .string()
     .min(1, "EMAIL_REGEX is required")

@@ -1,13 +1,11 @@
 import express from "express";
 import cors from "cors";
-
 import { erroHandler } from "./src/middlewares/errorHandler";
 import { router } from "./src/router/router";
 import morgan from "morgan";
-import logger from "./src/middlewares/winston";
 import { dbConnection } from "./src/config/mongoDB";
-import { env } from "./src/config/env";
-import { serever } from "./src/config/server";
+import { server } from "./src/config/server";
+import { job } from "./src/utils/cronjob";
 
 export const app = express();
 
@@ -27,20 +25,13 @@ app.use(morgan("tiny"));
 /// routes//////
 app.use("/api", router);
 
-const port = env.PORT;
-if (port) {
-  app.listen(port, () => {
-    console.log(`server started on port ${port}`);
-  });
-} else {
-  logger.error({
-    message: "port not found",
-    time: new Date().toISOString(),
-  });
-  process.exit(1);
-}
-// serever()
+////////////server///////////
+server();
+
+///////////// db connection
 dbConnection();
 
+/////////////crone job//////////////////
+job.start();
 ///////////global error handler/////////////
 app.use(erroHandler);

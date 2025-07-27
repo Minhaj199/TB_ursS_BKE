@@ -1,3 +1,5 @@
+/////////////// hashing password//////
+
 import bcrypt from "bcrypt";
 
 export function validatePassword(
