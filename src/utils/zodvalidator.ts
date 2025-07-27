@@ -7,7 +7,7 @@ import {
 } from "../schemas/userSchema";
 import { LoginValidationResult, SignupValidationResult } from "../types";
 import { ErrorType } from "../constrains/ErrorTypes";
-import {  ZodErrorMap } from "zod";
+import { ZodErrorMap } from "zod";
 import { UrlSchema } from "../schemas/urlSchema";
 
 ////////////formating error///
@@ -41,15 +41,15 @@ export const validateLogin = (
   }
   return { success: true, data: result.data };
 };
-;
-
-export const validateLongUrl=(url:unknown):{success:true,url:string}|
-{success:false,errors:Record<string,string>[]}=>{
-  const result=UrlSchema.safeParse(url)
-  if(!result.success){
-    return {success:false,errors:zodFormatedEror(result.error)}
-  }else{
-    return {success:true,url:result.data.url}
+export const validateLongUrl = (
+  url: unknown
+):
+  | { success: true; url: string }
+  | { success: false; errors: Record<string, string>[] } => {
+  const result = UrlSchema.safeParse(url);
+  if (!result.success) {
+    return { success: false, errors: zodFormatedEror(result.error) };
+  } else {
+    return { success: true, url: result.data.url };
   }
-
-}
+};

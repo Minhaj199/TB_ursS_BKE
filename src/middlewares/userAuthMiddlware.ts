@@ -10,8 +10,6 @@ declare global {
   namespace Express {
     interface Request {
       userID?: string;
-      preferedGender: string;
-      gender: string;
     }
   }
 }
@@ -27,6 +25,7 @@ export const userJwtAuthenticator = async (
   if (token && typeof token === "string") {
     try {
       const decode = verifyAccessToken(token);
+      
       if (typeof decode === "string") {
         res.status(HttpStatus.FORBIDDEN).json({
           message: "token is not valid,please log out",
@@ -34,6 +33,7 @@ export const userJwtAuthenticator = async (
         });
       }
       const isValid = decode as JwtPayload;
+      
       const currentTime = Math.floor(Date.now() / 1000);
       if (isValid) {
         if (isValid.exp && isValid.exp > currentTime) {
@@ -45,10 +45,11 @@ export const userJwtAuthenticator = async (
             .json({ message: "Token expired", status: HttpStatus.BAD_REQUEST });
         }
       } else {
-        res.json(HttpStatus.FORBIDDEN).json({
+       res.status(HttpStatus.FORBIDDEN).json({
           message: "validation Faild,please log out",
           status: HttpStatus.FORBIDDEN,
         });
+        return
       }
     } catch (error) {
       console.log(error)

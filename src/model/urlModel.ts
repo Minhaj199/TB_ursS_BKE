@@ -1,5 +1,4 @@
-
-import mongoose,{Schema} from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { IUrl } from "../types";
 
 const urlSchema = new Schema<IUrl>({
@@ -9,7 +8,8 @@ const urlSchema = new Schema<IUrl>({
   shortUrl: { type: String, required: true },
   clicks: { type: Number, default: 0 },
   expiresAt: { type: Date, required: true },
-  createdAt:{type:Date,default:new Date()}
+  createdAt: { type: Date, default: new Date() },
 });
+urlSchema.index({ shortUrl: 1 }, { unique: true });
 
-export default mongoose.model<IUrl>("Url", urlSchema);  
+export default mongoose.model<IUrl>("Url", urlSchema);

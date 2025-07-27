@@ -3,9 +3,9 @@ import dotenv from "dotenv";
 import { env } from "../config/env";
 dotenv.config();
 /////////////user signup validation schema////
-const emailRegexRow = env.EMAIL_REGEX
+const emailRegexRow = env.EMAIL_REGEX;
 const emailRegex = new RegExp(emailRegexRow);
-const phoneRegexRow = env.PHONE_REGEX
+const phoneRegexRow = env.PHONE_REGEX;
 const phoneRegex = new RegExp(phoneRegexRow);
 export const UserSignup = z
   .object({

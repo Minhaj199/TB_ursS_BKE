@@ -7,8 +7,9 @@ import morgan from "morgan";
 import logger from "./src/middlewares/winston";
 import { dbConnection } from "./src/config/mongoDB";
 import { env } from "./src/config/env";
+import { serever } from "./src/config/server";
 
-const app = express();
+export const app = express();
 
 const corsOpetion = {
   origin: ["http://localhost:5173"],
@@ -26,7 +27,7 @@ app.use(morgan("tiny"));
 /// routes//////
 app.use("/api", router);
 
-const port =env.PORT
+const port = env.PORT;
 if (port) {
   app.listen(port, () => {
     console.log(`server started on port ${port}`);
@@ -38,10 +39,8 @@ if (port) {
   });
   process.exit(1);
 }
-
-    dbConnection()
-    
-
+// serever()
+dbConnection();
 
 ///////////global error handler/////////////
 app.use(erroHandler);
