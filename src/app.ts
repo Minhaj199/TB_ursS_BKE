@@ -1,11 +1,11 @@
 import express from "express";
 import cors from "cors";
-import { erroHandler } from "./src/middlewares/errorHandler";
-import { router } from "./src/router/router";
+import { erroHandler } from "./middlewares/errorHandler";
+import { router } from "./router/router";
 import morgan from "morgan";
-import { dbConnection } from "./src/config/mongoDB";
-import { server } from "./src/config/server";
-import { job } from "./src/utils/cronjob";
+import { dbConnection } from "./config/mongoDB";
+import { server } from "./config/server";
+import { job } from "./utils/cronjob";
 
 export const app = express();
 

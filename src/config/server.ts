@@ -1,6 +1,6 @@
 import cluster from "cluster";
 import os from "os";
-import { app } from "../../app";
+import { app } from "../app";
 import { job } from "../utils/cronjob";
 import { env } from "./env";
 
