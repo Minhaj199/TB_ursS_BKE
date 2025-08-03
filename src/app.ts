@@ -7,6 +7,7 @@ import { dbConnection } from "./config/mongoDB";
 import { job } from "./utils/cronjob";
 import { env } from "./config/env";
 import cookieParser from "cookie-parser";
+import { server } from "./config/server";
 
 export const app = express();
 
@@ -29,10 +30,8 @@ app.use(morgan("common"));
 app.use("/api", router);
 
 ////////////server///////////
-// server();
-app.listen(3000, () => {
-  console.log("start");
-});
+server();
+
 
 ///////////// db connection
 dbConnection();

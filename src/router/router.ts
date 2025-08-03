@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authController } from "../controller/UserController";
+import { authController } from "../controller/userController"; 
 import { userJwtAuthenticator } from "../middlewares/userAuthMiddlware";
 import { checkDailyLimit } from "../middlewares/dialyLimit";
 import { urlContrller } from "../controller/urlController";
