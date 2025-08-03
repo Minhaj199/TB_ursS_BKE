@@ -1,5 +1,4 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
-import logger from "./winston";
 import { logError } from "../errors/logError";
 import { MongoDuplicateKeyError } from "../types";
 import { ErrorType } from "../constrains/ErrorTypes";

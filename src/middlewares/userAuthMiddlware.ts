@@ -1,4 +1,8 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+
+
+
+
 import { Request, Response, NextFunction } from "express";
 import { JwtPayload } from "jsonwebtoken";
 import { HttpStatus } from "../constrains/statusCodeContrain";
@@ -17,7 +21,10 @@ export const userJwtAuthenticator = async (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.headers["authforuser"];
+
+  const token=req.cookies.access
+
+
   const refresh = req.headers["refreshauthforuser"];
   if (token && typeof token === "string") {
     try {
@@ -37,6 +44,7 @@ export const userJwtAuthenticator = async (
           req.userID = isValid.userId;
           next();
         } else {
+     
           res
             .status(HttpStatus.FORBIDDEN)
             .json({ message: "Token expired", status: HttpStatus.BAD_REQUEST });

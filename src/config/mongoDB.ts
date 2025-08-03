@@ -7,10 +7,9 @@ export const dbConnection = async () => {
     const connection = await mongoose.connect(env.MONGO_URI);
     console.log(`DB connect:${connection.connection.host}`);
     await urlModel.syncIndexes();
-
-    console.log("Database connected and indexes synced");
   } catch (error) {
     console.error(`Error: ${(error as Error).message}`);
     process.exit(1);
   }
 };
+

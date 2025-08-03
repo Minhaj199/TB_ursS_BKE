@@ -17,6 +17,7 @@ export const urlContrller = {
         const originalUrl = validate.url;
         const userId = req.userID;
         const shortCode = nanoid(6);
+        //////////days 30 days////////////////
         const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
         const shortUrl = `${env.BASE_URL}/api/url/${shortCode}`;
         const newUrl = await urlModel.create({
@@ -47,6 +48,7 @@ export const urlContrller = {
     try {
       const { page = 1, limit = 3 } = req.query;
       const userId = req.userID;
+   
       const urls = await urlModel
         .find({ userId: userId }, { userId: 0 })
         .sort({ _id: -1 })

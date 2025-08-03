@@ -14,7 +14,7 @@ export const envSchema = z.object({
     .enum(["development", "production", "test"])
     .default("development"),
   PORT: z.string().default("3000"),
-  MONGO_URI: z.string().min(1, "MONGO_URI is required"),
+  MONGO_URI: z.string().  min(1, "MONGO_URI is required"),
   ACCESS_TOKEN_SECRET: z.string().min(1, "ACCESS_TOKEN_SECRET is required"),
   REFRESH_TOKEN_SECRET: z.string().min(1, "REFRESH_TOKEN_SECRET is required"),
   ACCESS_EXPIRES_IN: z.string().default("15m"),
@@ -31,4 +31,7 @@ export const envSchema = z.object({
     .string()
     .min(1, "PHONE_REGEX is required")
     .refine(isValidRegex, "PHONE_REGEX must be a valid regular expression"),
+    FROTENT_URL:z.url('frontend url not found').min(1,'frontend url not found'),
+    ENC_KEY:z.string(),
+    ENC_IV:z.string()
 });

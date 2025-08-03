@@ -66,7 +66,7 @@ PHONE_REGEX=
 MAX_URLS_PER_DAY=
 BASE_URL=
 CRON_JOB_INTERVEL=
-</pre>
+</pre>  
 
 ### Installation
 ```bash

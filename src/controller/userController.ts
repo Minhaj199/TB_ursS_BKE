@@ -11,10 +11,10 @@ import { validatePassword } from "../utils/passwordValidator";
 import { ErrorType } from "../constrains/ErrorTypes";
 import { HttpStatus } from "../constrains/statusCodeContrain";
 import { AppError } from "../errors/customError";
-import z from "zod";
+import z, { success } from "zod";
 import redis from "../config/radis";
 import { IUserDoc } from "../types";
-import { JwtPayload } from "jsonwebtoken";
+
 
 export const authController = {
   /////////////// checking username and password is valid///////////
@@ -49,7 +49,9 @@ export const authController = {
               "EX",
               3600 * 24
             );
-            res.json({ success: true, refreshToken, accessToken });
+            res.cookie('access',accessToken,{httpOnly:true,secure:false,sameSite:'lax',maxAge:1000*60*30})
+            res.cookie('refresh',refreshToken,{httpOnly:true,secure:false,sameSite:'lax',maxAge:1000*60*60*24})
+            res.json({ success: true});
           } else {
             //////////////password not matched///
             throw new AppError(
@@ -103,7 +105,7 @@ export const authController = {
         } else {
           /////// unidenfied error////
           throw new AppError(
-            "unidenfied error",
+            "Signup error",
             HttpStatus.INTERNAL_SERVER_ERROR,
             ErrorType.GeneralError,
             [{ general: "server error plaser try again" }]
@@ -125,13 +127,17 @@ export const authController = {
   genereteAccess: async (req: Request, res: Response) => {
     try {
       const tokenvalidator = z.string().min(10);
-      const validateToken = tokenvalidator.parse(req.body.refresh);
-      const verifyToken: any = verifyRefreshToken(validateToken);
+      if(!('refresh' in req.cookies)) return
+      const validateToken = tokenvalidator.parse(req.cookies.refresh);
+      const verifyToken= verifyRefreshToken(validateToken);
+ 
       if (typeof verifyToken === "object" && "userId" in verifyToken) {
         const inRedis = await redis.get(verifyToken.userId + "acs_redic");
         if (inRedis) {
+       
           const token = generateAccessToken(verifyToken.userId);
-          return res.json({ token: token });
+          res.cookie('access',token,{httpOnly:true,secure:false,sameSite:'lax',maxAge:1000*60*15})
+          return res.json({success:true});
         } else {
           throw new Error("in valid token");
         }
@@ -147,4 +153,31 @@ export const authController = {
       }
     }
   },
+  signout:async (req: Request, res: Response) =>{
+    try {
+       const refresh=req.cookies?.refresh||''
+    if(refresh){
+      const decodedData=verifyRefreshToken(refresh)
+         
+      if(decodedData!==null&&typeof decodedData==='object'&&'userId' in decodedData){
+        
+        res.clearCookie('access',{httpOnly:true,secure:false,sameSite:'lax'})
+          
+        res.clearCookie('refresh',{httpOnly:true,secure:false,sameSite:'lax'})
+        await redis.get(decodedData.userId.toString()+"acs_redic")
+       
+         await redis.del(decodedData.userId.toString()+"acs_redic")
+       res.json( {success:true})
+      }else{
+       return {success:false}
+      }
+
+    }else{
+      return {success:false}
+    }
+    } catch (error) {
+      res.json({success:false})
+    }
+   
+  }
 };

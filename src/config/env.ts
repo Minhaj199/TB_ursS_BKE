@@ -23,5 +23,8 @@ export const env = {
   PHONE_REGEX: new RegExp(parsedEnv.data.PHONE_REGEX),
   MAX_URLS_PER_DAY: parseInt(parsedEnv.data.MAX_URLS_PER_DAY),
   BASE_URL: parsedEnv.data.BASE_URL,
-  CRON_JOB_INTERVEL:parsedEnv.data.CRON_JOB_INTERVEL
+  CRON_JOB_INTERVEL:parsedEnv.data.CRON_JOB_INTERVEL,
+  FROTENT_URL:parsedEnv.data.FROTENT_URL,
+  ENC_KEY:parsedEnv.data.ENC_KEY,
+  ENC_IV:parsedEnv.data.ENC_IV
 };
