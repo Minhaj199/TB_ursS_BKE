@@ -26,5 +26,6 @@ export const env = {
   CRON_JOB_INTERVEL:parsedEnv.data.CRON_JOB_INTERVEL,
   FROTENT_URL:parsedEnv.data.FROTENT_URL,
   ENC_KEY:parsedEnv.data.ENC_KEY,
-  ENC_IV:parsedEnv.data.ENC_IV
+  ENC_IV:parsedEnv.data.ENC_IV,
+  MODE:parsedEnv.data.MODE
 };

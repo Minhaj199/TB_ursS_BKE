@@ -33,5 +33,6 @@ export const envSchema = z.object({
     .refine(isValidRegex, "PHONE_REGEX must be a valid regular expression"),
     FROTENT_URL:z.url('frontend url not found').min(1,'frontend url not found'),
     ENC_KEY:z.string(),
-    ENC_IV:z.string()
+    ENC_IV:z.string(),
+    MODE:z.enum(["dev", "prod", "stag"])
 });
