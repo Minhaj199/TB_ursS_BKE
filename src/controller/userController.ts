@@ -49,8 +49,8 @@ export const authController = {
               "EX",
               3600 * 24
             );
-            res.cookie('access',accessToken,{httpOnly:true,secure:true,sameSite:'none',maxAge:1000*60*30})
-            res.cookie('refresh',refreshToken,{httpOnly:true,secure:true,sameSite:'none',maxAge:1000*60*60*24})
+            res.cookie('access',accessToken,{httpOnly:true,secure:true,path:'/',sameSite:'none',maxAge:1000*60*30})
+            res.cookie('refresh',refreshToken,{httpOnly:true,path:'/',secure:true,sameSite:'none',maxAge:1000*60*60*24})
             res.json({ success: true});
           } else {
             //////////////password not matched///
@@ -136,7 +136,7 @@ export const authController = {
         if (inRedis) {
        
           const token = generateAccessToken(verifyToken.userId);
-          res.cookie('access',token,{httpOnly:true,secure:true,sameSite:'none',maxAge:1000*60*15})
+          res.cookie('access',token,{httpOnly:true,path:'/',secure:true,sameSite:'none',maxAge:1000*60*15})
           return res.json({success:true});
         } else {
           throw new Error("in valid token");
@@ -161,9 +161,9 @@ export const authController = {
          
       if(decodedData!==null&&typeof decodedData==='object'&&'userId' in decodedData){
         
-        res.clearCookie('access',{httpOnly:true,secure:true,sameSite:'none'})
+        res.clearCookie('access',{httpOnly:true,path:'/',secure:true,sameSite:'none'})
           
-        res.clearCookie('refresh',{httpOnly:true,secure:false,sameSite:'none'})
+        res.clearCookie('refresh',{httpOnly:true,path:'/',secure:false,sameSite:'none'})
         await redis.get(decodedData.userId.toString()+"acs_redic")
        
          await redis.del(decodedData.userId.toString()+"acs_redic")
